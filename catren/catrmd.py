@@ -7,7 +7,8 @@ def catrmd(filenames: List[str],
            input_path: str = './',
            output_name: str = "cat.Rmd",
            output_path: str = './') -> None:
-    """Create an R markdown file from markdown and scripts."""
+
+    """Create an R markdown file from markdown files and scripts."""
 
     def read_file(filename):
         with open(filename) as file:
