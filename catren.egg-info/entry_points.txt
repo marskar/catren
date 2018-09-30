@@ -1,0 +1,3 @@
+[console_scripts]
+catrmd = catren.catrmd:command_line_runner
+

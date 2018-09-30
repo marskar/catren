@@ -1,0 +1,141 @@
+Metadata-Version: 2.1
+Name: catren
+Version: 0.0.1
+Summary: Create R markdown files from markdown files and scripts.
+Home-page: https://github.com/marskar/nbless
+Author: Martin Skarzynski
+Author-email: marskar@gmail.com
+License: UNKNOWN
+Description: # The `catren` python package
+        
+        Using `catren` you can create and render [R markdown files](https://rmarkdown.rstudio.com/) in
+        - your terminal or
+        - your favorite Python environment (e.g. [PyCharm](https://www.jetbrains.com/pycharm/) or [Visual Studio Code](https://code.visualstudio.com/docs/python/python-tutorial)).
+        
+        The `catren` python package consists of 4 functions:
+        - `catrmd`, which con**cat**enates input files to output an [R Markdown](https://rmarkdown.rstudio.com/authoring_quick_tour.html) (Rmd) file.
+        - `render`, which calls `rmarkdown::render` to create various output files (e.g. HTML documents).
+        - `catren`, which combines the functionality of **cat**rmd and **ren**der.
+        - `rmdtor`, which uses `knitr::purl` to convert an Rmd into an R script.
+        
+        All of the above function work for Python _and_ R code, except `rmdtor` which skips Python chunks.
+        
+        To run Rmd files that include R and Python code, you will need the `reticulate` R package.
+        
+        The functions that begin with `r` (`render` and `rmdtor`) rely on the `rmarkdown` and `knitr`,
+        R packages written by [Yihui Xie](https://yihui.name/en/about/).
+        The `catrmd` function has no dependencies beyond Python,
+        all other functions (`render`, `catren`, and `rmdtor`) require R.
+        
+        ## Installation
+        
+        ```sh
+        pip install catren
+        ```
+        
+        or clone the [repo](https://github.com/marskar/catren), e.g. `git clone https://github.com/marskar/catren` and either use locally, e.g. `python catren.py header.yml README.md plot.py notes.txt` or install using setup.py, e.g. `python setup.py install`.
+        
+        ## Basic usage: terminal
+        
+        ### Creating an R markdown file with `catrmd` in the terminal
+        
+        The `catrmd` functions works like `nbuild`. Provide all of the source files as arguments, e.g.
+        
+        ```sh
+        catrmd header.yml intro.md letters.R notes.txt plot.py
+        ```
+        
+        The default output filename for `catrmd` is `cat.Rmd`. By default, input and output files are located in the current directory (`'./'`).
+        
+        You can provide a more descriptive filename for the unrendered Rmd (`-u`) and set different input  (`-i`) and output  (`-o`) filepaths:
+        
+        ```sh
+        catrmd header.yml intro.md letters.R notes.txt plot.py --unrendered raw.Rmd --output_path rmarkdown/
+        # Or
+        catrmd header.yml intro.md letters.R notes.txt plot.py -u raw.Rmd -o rmarkdown/
+        ```
+        
+        If want to later output an R notebook using [RStudio](https://rmarkdown.rstudio.com/r_notebooks), your YAML header should include `html_notebook` as an output type (Hint: press ctrl/cmd+Shift+K).
+        
+        ```yaml
+        ---
+        title: "Untitled"
+        output: html_notebook
+        ---
+        ```
+        
+        The `render` function from the `rmarkdown` R package allows you to specify the output type on the fly with the `output_format` argument.
+        
+        ## Basic usage: python environment
+        
+        ```python
+        # You can import any or all of the functions from the catren package.
+        
+        # You can also import each function individually
+        from catren import catrmd
+        from catren import render
+        from catren import catren
+        from catren import rmdtor
+        
+        # The above imports all 4 functions
+        # This can also be done with either of the two lines below.
+        from catren import nbuild, nbexec, nbless, catrmd
+        from catren import *
+        
+        # Another alternative is to import the package and use it as a namespace.
+        import catren as cr
+        
+        # Use individually
+        
+        # To make an Rmd file, use catrmd
+        catrmd(["header.yml", "intro.md", "letters.R", "plot.py", "notes.txt"], output_path="rmarkdown/")
+        
+        # catrmd will also work with Python scripts.
+        catrmd(["header.yml", "README.md", "plot.py", "notes.txt"], output_path="notebooks/")
+        
+        # Or to run both catrmd and render at once, use catren
+        catren["README.md", "plot.py", "notes.txt"], nbexec_path="notebooks/")
+        
+        
+        # Use nbless as a namespace
+        cr.catrmd(["header.yml", "intro.md", "letters.R", "plot.py", "notes.txt"], output_path="rmarkdown/")
+        ```
+        
+        You can also run the `catren` functions in an R environment using the `reticulate` R package.
+        
+        ### Missing a dependency?
+        
+        If you installed Python and R with [Anaconda](https://www.anaconda.com/download/), you should already have all of the dependencies (`python` and `r-essentials`).
+        
+        If not, or if you have [Miniconda](https://conda.io/miniconda.html) installed, run
+        
+        ```sh
+        conda install -yc r r-essentials
+        ```
+        
+        ## Too many file names to type out?
+        
+        You can use the `ls` command to assign all of the relevant names in the current directory to a variable and pass this variable as an argument to `nbconvert.py`.
+        
+        To preserve the order and differentiate files that should be incorporated into the notebook, I recommend left padding your file names with zeros (e.g. 01_intro.md, 02_figure1.py).
+        
+        Consider the example below:
+        
+        ```sh
+        touch {01..09}.py
+        name_list=`ls 0*.py`
+        python catrmd.py `echo $name_list`
+        ```
+        
+        In a python environment, I recommend `os.listdir` to obtain a list of all files:
+        ```python
+        from os import listdir
+        from os.path import isfile, join
+        onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown

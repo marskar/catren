@@ -7,10 +7,11 @@ def catrmd(filenames: List[str],
            input_path: str = './',
            output_name: str = "cat.Rmd",
            output_path: str = './') -> None:
+    """Create an R markdown file from markdown and scripts."""
 
     def read_file(filename):
-        with open(filename) as f:
-            return f.read()
+        with open(filename) as file:
+            return file.read()
 
     if not input_path.endswith('/'):
         input_path += '/'
@@ -39,7 +40,7 @@ def command_line_runner():
     parser.add_argument('--input_path', '-i', default='./',
                         help='The filepath to the source files.')
 
-    parser.add_argument('--unrendered', '-u', default='unrendered.Rmd',
+    parser.add_argument('--output_name', '-n', default='unrendered.Rmd',
                         help='The filename of the unrendered output Rmd file.')
 
     parser.add_argument('--output_path', '-o', default='./',
@@ -48,7 +49,7 @@ def command_line_runner():
     args = parser.parse_args()
     names = args.names
     in_path = args.input_path
-    out_name = args.unrendered
+    out_name = args.output_name
     out_path = args.output_path
 
     catrmd(filenames=names,
