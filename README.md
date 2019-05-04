@@ -9,7 +9,8 @@ The `catren` python package consists of 5 functions:
 - `sunder`, which extracts 1) a YAML file, 2) R scripts and 3) [Markdown](https://www.markdownguide.org/) (md) files from Rmd files. `sunder` can either output one R script per code chunk or a single R script per Rmd file (similar to `knitr::purl`). Similarly, Markdown content can be combined into a single file or output as separate files.
 - `render`, which calls `rmarkdown::render` to create various output files (e.g. HTML documents).
 - `catren`, which combines the functionality of **cat**rmd and **ren**der.
-- `rmdtor`, which uses `knitr::purl` to convert an Rmd into an R script.
+- `rmdtor`, which uses `knitr::purl` to convert an Rmd file into an R script.
+- `rtormd`, which uses `knitr::spin` to convert an R script into an Rmd file.
 
 All of the above function work for Python _and_ R code, except `rmdtor` which skips Python chunks.
 
