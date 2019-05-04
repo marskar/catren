@@ -4,7 +4,7 @@ Using `catren` you can create and render [R markdown files](https://rmarkdown.rs
 - your terminal or
 - your favorite Python environment (e.g. [PyCharm](https://www.jetbrains.com/pycharm/) or [Visual Studio Code](https://code.visualstudio.com/docs/python/python-tutorial)).
 
-The `catren` python package consists of 5 functions:
+The `catren` python package consists of 6 shell commands and functions:
 - `catrmd`, which con**cat**enates input files to output an [R Markdown](https://rmarkdown.rstudio.com/authoring_quick_tour.html) (Rmd) file.
 - `sunder`, which extracts 1) a YAML file, 2) R scripts and 3) [Markdown](https://www.markdownguide.org/) (md) files from Rmd files. `sunder` can either output one R script per code chunk or a single R script per Rmd file (similar to `knitr::purl`). Similarly, Markdown content can be combined into a single file or output as separate files.
 - `render`, which calls `rmarkdown::render` to create various output files (e.g. HTML documents).
