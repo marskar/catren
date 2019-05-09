@@ -1,5 +1,6 @@
+#!/usr/bin/env Rscript --vanilla
 get_char <- function(filename) {
-    readChar(filename, file.info("example.Rmd")$size)
+    readChar(filename, file.info(filename)$size)
 }
 
 get_yaml <- function(x) {
@@ -19,16 +20,25 @@ rmd2spin <- function(x) {
 sunder <- function(input_filename) {
     fname <- tools::file_path_sans_ext(input_filename)
     text <- get_char(input_filename)
-    cat(get_yaml(text), file = paste0(fname, "_00.yaml"))
+    code_and_text <- rmd2spin(get_rest(text))
+    n_digits <- floor(log10(length(code_and_text))) + 1
     n <- 0
-    for (i in rmd2spin(get_rest(text))) {
+    ending <- sprintf(paste0("%0", n_digits, "d"), n)
+    cat(get_yaml(text), file = paste0(fname, "_", ending, ".yaml"))
+    for (i in code_and_text) {
         n = n + 1
+        ending <- sprintf(paste0("%0", n_digits, "d"), n)
         if (startsWith(i, "#+")) {
-            cat(i, file = paste0(fname, "_", sprintf("%02d", n), ".R"))
+            cat(i, file = paste0(fname, "_", ending, ".R"))
         } else {
-            cat(i, file = paste0(fname, "_", sprintf("%02d", n), ".md"))
+            cat(i, file = paste0(fname, "_", ending, ".md"))
         }
     }
 }
 
-sunder("example.Rmd")
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 1) {
+    sunder(args)
+} else if (length(args) > 1) {
+    sapply(args, sunder)
+}
