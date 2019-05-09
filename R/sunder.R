@@ -36,6 +36,8 @@ sunder <- function(input_filename) {
     }
 }
 
+sunder("Day1_Theoph.Rmd")
+
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 1) {
     sunder(args)
